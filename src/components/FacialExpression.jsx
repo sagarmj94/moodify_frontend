@@ -98,7 +98,7 @@ const FacialExpression = ({setSongs}) => {
     }
     // Fetch songs based on detected mood get api
     axios
-  .get(`${BASE_URL}songs?mood=${mood}`)
+  .get(`${BASE_URL}/songs?mood=${mood}`)
   .then((response) => {
     console.log("Songs fetched:", response.data.songs);
     setSongs(response.data.songs);
@@ -134,7 +134,7 @@ const FacialExpression = ({setSongs}) => {
     formData.append("mood", mood);
 
     try {
-      const response = await axios.post("http://localhost:3000/songs", formData);
+      const response = await axios.post(`${BASE_URL}/songs`, formData);
       console.log("Uploaded song:", response.data.song);
       // setSongs((prev) => [...prev, response.data.song]);
 
