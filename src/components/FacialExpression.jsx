@@ -17,10 +17,9 @@ const FacialExpression = ({ setSongs }) => {
   const [mood, setMood] = useState("");
   const [error, setError] = useState("");
   const [detectedMood, setDetectedMood] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
-  const [songs, setLocalSongs] = useState([]); // Store fetched songs locally here
-  const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
-  //   const canvasRef = useRef();
   // Load face-api models
   const loadModels = async () => {
     const MODEL_URL = "/models";
@@ -44,7 +43,7 @@ const FacialExpression = ({ setSongs }) => {
       });
   };
 
-  
+
 
   // detect mood handler
   const detectMood = async () => {
@@ -78,7 +77,7 @@ const FacialExpression = ({ setSongs }) => {
         setSongs(response.data.songs);
       })
       .catch((error) => {
-        console.error("Error fetching songs:", error); 
+        console.error("Error fetching songs:", error);
       });
     if (mood) {
       console.log("Detected mood:", mood, "Confidence:", maxConfidence);
@@ -107,7 +106,7 @@ const FacialExpression = ({ setSongs }) => {
     formData.append("artist", artist);
     formData.append("audio", audio);
     formData.append("mood", mood);
-
+    setIsUploading(true);
     try {
       const response = await axios.post(`${BASE_URL}/songs`, formData);
       console.log("Uploaded song:", response.data.song);
@@ -116,9 +115,12 @@ const FacialExpression = ({ setSongs }) => {
       setAudio(null);
       setMood("");
       setError("");
+      fileInputRef.current.value = null;
     } catch (err) {
       console.error("Upload error:", err);
       setError("Failed to upload song. Please try again.");
+    } finally {
+      setIsUploading(false); 
     }
   };
 
@@ -165,12 +167,15 @@ const FacialExpression = ({ setSongs }) => {
           <option value="surprised">Surprised</option>
         </select>
         <input
+        ref={fileInputRef}
           type="file"
           accept="audio/*"
           onChange={(e) => setAudio(e.target.files[0])}
           required
         />
-        <button type="submit">Upload</button>
+        <button type="submit" disabled={isUploading}>
+          {isUploading ? "Uploading..." : "Upload"}
+        </button>
       </form>
     </div>
   );
