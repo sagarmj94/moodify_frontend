@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import "./Songs.css";
 
-const Songs = ({songs}) => {
+const Songs = ({ songs }) => {
+  const currentlyPlayingAudio = useRef(null);
 
-  
+  const handlePlay = (e) => {
+    // Pause previously playing audio (if any) before playing new audio
+    if (currentlyPlayingAudio.current && currentlyPlayingAudio.current !== e.target) {
+      currentlyPlayingAudio.current.pause();
+    }
+    currentlyPlayingAudio.current = e.target;
+  };
 
   return (
     <div className="mood-songs">
@@ -15,13 +22,14 @@ const Songs = ({songs}) => {
             <p>{song.artist}</p>
           </div>
           <div>
-            <audio controls={true} src={song.audio}> </audio>
-            <i
-              className="ri-pause-line"
-            ></i>
-            <i
-              className="ri-play-circle-line"
-            ></i>
+            <audio
+              controls
+              src={song.audio}
+              onPlay={handlePlay}
+            />
+            {/* The play/pause icons below can be removed or updated if you want custom controls */}
+            <i className="ri-pause-line"></i>
+            <i className="ri-play-circle-line"></i>
           </div>
         </div>
       ))}

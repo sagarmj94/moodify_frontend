@@ -9,14 +9,17 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 
 
-const FacialExpression = ({setSongs}) => {
+const FacialExpression = ({ setSongs }) => {
   const videoRef = useRef();
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
   const [audio, setAudio] = useState(null);
   const [mood, setMood] = useState("");
   const [error, setError] = useState("");
+  const [detectedMood, setDetectedMood] = useState("");
 
+  const [songs, setLocalSongs] = useState([]); // Store fetched songs locally here
+  const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
   //   const canvasRef = useRef();
   // Load face-api models
   const loadModels = async () => {
@@ -41,36 +44,7 @@ const FacialExpression = ({setSongs}) => {
       });
   };
 
-  // Handle detection
-  //   const handleVideoOnPlay = () => {
-  //     setInterval(async () => {
-  //       if (!videoRef.current) return;
-  //       const detections = await faceapi
-  //         .detectAllFaces(videoRef.current, new faceapi.TinyFaceDetectorOptions())
-  //         .withFaceLandmarks()
-  //         .withFaceExpressions();
-  //       let mostProableExpression = 0;
-  //       let _expression = "";
-
-  //       if (!detections || detections.length === 0) {
-  //         console.log("No Face detected");
-  //         return;
-  //       }
-
-  //       if (detections.length > 0) {
-  //         const expressions = detections[0].expressions;
-  //         for (const expression in expressions) {
-  //           if (expressions[expression] > mostProableExpression) {
-  //             mostProableExpression = expressions[expression];
-  //             _expression = expression;
-  //           }
-  //         }
-  //         if (_expression) {
-  //           console.log("_expression", _expression);
-  //         }
-  //       }
-  //     }, 5000);
-  //   };
+  
 
   // detect mood handler
   const detectMood = async () => {
@@ -98,17 +72,18 @@ const FacialExpression = ({setSongs}) => {
     }
     // Fetch songs based on detected mood get api
     axios
-  .get(`${BASE_URL}/songs?mood=${mood}`)
-  .then((response) => {
-    console.log("Songs fetched:", response.data.songs);
-    setSongs(response.data.songs);
-  })
-  .catch((error) => {
-    console.error("Error fetching songs:", error); // This shows up if CORS or server is down
-  });
+      .get(`${BASE_URL}/songs?mood=${mood}`)
+      .then((response) => {
+        console.log("Songs fetched:", response.data.songs);
+        setSongs(response.data.songs);
+      })
+      .catch((error) => {
+        console.error("Error fetching songs:", error); 
+      });
     if (mood) {
       console.log("Detected mood:", mood, "Confidence:", maxConfidence);
       console.log(`Detected mood: ${mood}`);
+      setDetectedMood(mood);
     }
   };
 
@@ -118,7 +93,7 @@ const FacialExpression = ({setSongs}) => {
   }, []);
 
   // form handle data
-   const handleUpload = async (e) => {
+  const handleUpload = async (e) => {
     e.preventDefault();
 
     // Validation
@@ -136,9 +111,6 @@ const FacialExpression = ({setSongs}) => {
     try {
       const response = await axios.post(`${BASE_URL}/songs`, formData);
       console.log("Uploaded song:", response.data.song);
-      // setSongs((prev) => [...prev, response.data.song]);
-
-      // Clear form
       setTitle("");
       setArtist("");
       setAudio(null);
@@ -156,16 +128,12 @@ const FacialExpression = ({setSongs}) => {
         ref={videoRef}
         autoPlay
         muted
-        // onPlay={handleVideoOnPlay}
-        // style={{ position: "absolute" }}
         className="user-video-feed"
       />
-      {/* <canvas
-        ref={canvasRef}
-        width="720"
-        height="560"
-        style={{ position: "absolute" }}
-      /> */}
+      {detectedMood && (
+        <p className="mood-display">Your Mood: <strong>{detectedMood.toUpperCase()}</strong></p>
+      )}
+
       <button onClick={detectMood} className="detect-btn">
         Detect
       </button>
