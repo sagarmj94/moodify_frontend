@@ -1,94 +1,85 @@
 .mood-songs {
-  width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   margin: 2rem auto;
-  padding: 2rem 3rem;
-  background: #121212;
+  padding: 2rem;
+  background-color: #1e1e1e;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
-  color: #eee;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  overflow: hidden; /* Prevent horizontal scroll */
+  color: #f0f0f0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
 }
 
 .mood-songs h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #ff6f61;
   margin-bottom: 1.5rem;
   font-weight: 700;
-  font-size: 1.8rem;
-  text-align: center;
-  color: #ff6f61;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
 }
 
-.mood-songs .song {
+.song {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #1e1e1e;
-  padding: 1rem 1.5rem;
+  background-color: #2a2a2a;
+  padding: 1rem 1.2rem;
   border-radius: 10px;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  flex-wrap: wrap; /* 👈 Ensures content wraps on smaller screens */
 }
 
-.mood-songs .song:hover {
-  background-color: #292929;
-  box-shadow: 0 4px 12px rgba(255, 111, 97, 0.5);
+.song:hover {
+  background-color: #333;
 }
 
-.mood-songs .title {
-  flex: 1 1 60%;
+.title {
+  flex: 1;
   margin-right: 1rem;
 }
 
-.mood-songs .title h3 {
-  margin: 0 0 0.3rem 0;
+.title h3 {
+  margin: 0;
   font-size: 1.2rem;
-  font-weight: 600;
   color: #ff6f61;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.mood-songs .title p {
-  margin: 0;
-  font-size: 0.9rem;
-  color: #aaa;
+.title p {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.95rem;
+  color: #ccc;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.mood-songs audio {
-  outline: none;
+audio {
   width: 220px;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #222;
-  box-shadow: 0 0 5px rgba(255, 111, 97, 0.7);
-  cursor: pointer;
-  flex-shrink: 0;
+  outline: none;
+  box-shadow: 0 0 6px rgba(255, 111, 97, 0.6);
 }
 
 @media (max-width: 600px) {
-  .mood-songs {
-    padding: 1rem;
-  }
-
-  .mood-songs .song {
+  .song {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
 
-  .mood-songs .title {
+  .title {
     width: 100%;
-    margin-bottom: 0.5rem;
+    margin-right: 0;
   }
 
-  .mood-songs audio {
+  audio {
     width: 100%;
+  }
+
+  .mood-songs {
+    padding: 1.5rem 1rem;
   }
 }

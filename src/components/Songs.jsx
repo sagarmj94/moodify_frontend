@@ -20,15 +20,17 @@ const Songs = ({ songs }) => {
           <div className="title">
             <h3>{song.title}</h3>
             <p>{song.artist}</p>
+            <div style={{ paddingTop: "10px", width: "100%" }}>
+              <audio
+                style={{ paddingTop: "10px", width: "100%", backgroundColor: "transparent" }}
+                controls
+                src={song.audio}
+                onPlay={handlePlay}
+              />
+              {/* The play/pause icons below can be removed or updated if you want custom controls */}
+            </div>
           </div>
-          <div>
-            <audio
-              controls
-              src={song.audio}
-              onPlay={handlePlay}
-            />
-            {/* The play/pause icons below can be removed or updated if you want custom controls */}
-          </div>
+
         </div>
       ))}
     </div>

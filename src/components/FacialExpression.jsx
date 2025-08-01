@@ -18,6 +18,7 @@ const FacialExpression = ({ setSongs }) => {
   const [error, setError] = useState("");
   const [detectedMood, setDetectedMood] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [lookAtCamera, setLookAtCamera] = useState('');
   const fileInputRef = useRef(null);
 
   // Load face-api models
@@ -56,6 +57,7 @@ const FacialExpression = ({ setSongs }) => {
 
     if (!detections || detections.length === 0) {
       console.log("No face detected");
+      setLookAtCamera("Please look at the camera");
       return;
     }
 
@@ -120,7 +122,7 @@ const FacialExpression = ({ setSongs }) => {
       console.error("Upload error:", err);
       setError("Failed to upload song. Please try again.");
     } finally {
-      setIsUploading(false); 
+      setIsUploading(false);
     }
   };
 
@@ -134,6 +136,9 @@ const FacialExpression = ({ setSongs }) => {
       />
       {detectedMood && (
         <p className="mood-display">Your Mood: <strong>{detectedMood.toUpperCase()}</strong></p>
+      )}
+      {!detectedMood && lookAtCamera && (
+        <p className="look-at-camera">{lookAtCamera}</p>
       )}
 
       <button onClick={detectMood} className="detect-btn">
@@ -167,7 +172,7 @@ const FacialExpression = ({ setSongs }) => {
           <option value="surprised">Surprised</option>
         </select>
         <input
-        ref={fileInputRef}
+          ref={fileInputRef}
           type="file"
           accept="audio/*"
           onChange={(e) => setAudio(e.target.files[0])}
