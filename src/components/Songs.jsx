@@ -28,8 +28,6 @@ const Songs = ({ songs }) => {
               onPlay={handlePlay}
             />
             {/* The play/pause icons below can be removed or updated if you want custom controls */}
-            <i className="ri-pause-line"></i>
-            <i className="ri-play-circle-line"></i>
           </div>
         </div>
       ))}
