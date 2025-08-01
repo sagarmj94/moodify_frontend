@@ -5,6 +5,8 @@ import * as faceapi from "face-api.js";
 import "./FacialExpression.css";
 import axios from "axios";
 import { useState } from "react";
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 
 
 const FacialExpression = ({setSongs}) => {
@@ -16,7 +18,6 @@ const FacialExpression = ({setSongs}) => {
   const [error, setError] = useState("");
 
   //   const canvasRef = useRef();
-
   // Load face-api models
   const loadModels = async () => {
     const MODEL_URL = "/models";
@@ -97,7 +98,7 @@ const FacialExpression = ({setSongs}) => {
     }
     // Fetch songs based on detected mood get api
     axios
-  .get(`http://localhost:3000/songs?mood=${mood}`)
+  .get(`${BASE_URL}/songs?mood=${mood}`)
   .then((response) => {
     console.log("Songs fetched:", response.data.songs);
     setSongs(response.data.songs);
