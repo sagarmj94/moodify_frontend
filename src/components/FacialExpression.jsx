@@ -98,7 +98,7 @@ const FacialExpression = ({setSongs}) => {
     }
     // Fetch songs based on detected mood get api
     axios
-  .get(`${BASE_URL}/songs?mood=${mood}`)
+  .get(`${BASE_URL}songs?mood=${mood}`)
   .then((response) => {
     console.log("Songs fetched:", response.data.songs);
     setSongs(response.data.songs);
